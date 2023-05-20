@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CPTemplate>
+  <AppVersion>26</AppVersion>
+  <CPSheet>
+    <GroupBox Label="Part Info" PropName="Groupbox6" DefaultState="Expanded">
+      <Control Label="Part Description" PropName="Description" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="" Mode="Text" />
+      <Control Label="Part Material" PropName="Material" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="SW-Material" Mode="SWProperty" />
+      <Control Label="Part Weight" PropName="Weight" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="SW-Mass" Mode="SWProperty" />
+    </GroupBox>
+  </CPSheet>
+</CPTemplate>

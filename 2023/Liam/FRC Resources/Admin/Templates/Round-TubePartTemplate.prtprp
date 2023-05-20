@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CPTemplate>
+  <AppVersion>26</AppVersion>
+  <CPSheet>
+    <GroupBox Label="Part Dimensions" PropName="Groupbox2" DefaultState="Expanded">
+      <Control Label="Part Length" PropName="Length" ApplyTo="Global" Type="NumericCtrl" ReadOnly="False" DefaultValue="0" />
+      <Control Label="Outside Diameter" PropName="OD" ApplyTo="Global" Type="NumericCtrl" ReadOnly="False" DefaultValue="0" />
+      <Control Label="Internal Measurement" PropName="InternalMeasurement" ApplyTo="Global" Type="RadioButton" ReadOnly="False">
+        <Data>
+          <Item Label="Inside Diameter" PropValue="1">
+            <ChildControl PropName="IDInput" Visibility="IsChecked=true" />
+          </Item>
+          <Item Label="Thickness" PropValue="2">
+            <ChildControl PropName="ThicknessInput" Visibility="IsChecked=true" />
+          </Item>
+        </Data>
+      </Control>
+      <Control Label="Inside Diameter" PropName="IDInput" ApplyTo="Global" Type="NumericCtrl" ReadOnly="False" DefaultValue="0" />
+      <Control Label="Thickness" PropName="ThicknessInput" ApplyTo="Global" Type="NumericCtrl" ReadOnly="False" DefaultValue="0" />
+    </GroupBox>
+    <GroupBox Label="Part Info" PropName="Groupbox7" DefaultState="Expanded">
+      <Control Label="Part Description" PropName="Description" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="" Mode="Text" />
+      <Control Label="Part Material" PropName="Material" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="SW-Material" Mode="SWProperty" />
+      <Control Label="Part Weight" PropName="Weight" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="SW-Mass" Mode="SWProperty" />
+    </GroupBox>
+  </CPSheet>
+</CPTemplate>

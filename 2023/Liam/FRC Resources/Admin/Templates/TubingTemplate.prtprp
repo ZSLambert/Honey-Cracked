@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CPTemplate>
+  <AppVersion>25</AppVersion>
+  <CPSheet>
+    <GroupBox Label="Manufacturer Info" PropName="Groupbox2" DefaultState="Expanded">
+      <Control Label="Part Origin" PropName="Manufacturer" ApplyTo="Global" Type="RadioButton" ReadOnly="False">
+        <Data>
+          <Item Label="Purchased (COTS)" PropValue="Buy" />
+          <Item Label="Manufactured (Custom)" PropValue="Build" />
+        </Data>
+      </Control>
+      <Control Label="COMPANY NAME (COTS)" PropName="Company Name" ApplyTo="Global" Type="ComboBox" ReadOnly="False" UserDefineable="False">
+        <Data Path="" SourceType="List">
+          <Item>-</Item>
+          <Item>VEXpro</Item>
+          <Item>AndyMark</Item>
+          <Item>West Coast Products</Item>
+          <Item>Cross the Road Electronics</Item>
+          <Item>McMaster</Item>
+          <Item>Pneuaire</Item>
+          <Item>BaneBots</Item>
+        </Data>
+      </Control>
+      <Control Label="MANUFACTURER NAME (Custom)" PropName="Manufacturer Name" ApplyTo="Global" Type="ComboBox" ReadOnly="False" UserDefineable="False">
+        <Data Path="" SourceType="List">
+          <Item>-</Item>
+          <Item>The RoboBees</Item>
+          <Item>TBD</Item>
+          <Item>Triton Metals</Item>
+          <Item>Ship Point Machine Shop</Item>
+          <Item>BAE Systems</Item>
+          <Item>APSD</Item>
+          <Item>Cardinal Scientific</Item>
+          <Item>VEXpro</Item>
+        </Data>
+      </Control>
+    </GroupBox>
+    <GroupBox Label="Part Info" PropName="Groupbox6" DefaultState="Expanded">
+      <Control Label="Part Description" PropName="Description" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="" Mode="Text" />
+      <Control Label="Part Material" PropName="Material" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="SW-Material" Mode="SWProperty" />
+      <Control Label="Part Cost" PropName="Unit Cost" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="&quot;SW-Cost-MaterialCost@PRT.SLDPRT&quot;" Mode="Text" />
+      <Control Label="Part Weight" PropName="Weight" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="SW-Mass" Mode="SWProperty" />
+    </GroupBox>
+  </CPSheet>
+</CPTemplate>

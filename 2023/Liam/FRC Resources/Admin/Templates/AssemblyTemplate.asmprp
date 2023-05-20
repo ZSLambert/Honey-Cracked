@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CPTemplate>
+  <CPSheet>
+    <GroupBox Label="Assembly Info" PropName="Groupbox2" DefaultState="Expanded">
+      <Control Label="Assembly Description" PropName="Description" ApplyTo="Global" Type="TextBox" DefaultValue="" Mode="Text" />
+      <Control Label="Assembly Weight" PropName="Weight" ApplyTo="Global" Type="TextBox" DefaultValue="SW-Mass" Mode="SWProperty" />
+    </GroupBox>
+  </CPSheet>
+</CPTemplate>
