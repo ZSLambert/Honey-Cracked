@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CPTemplate>
+  <AppVersion>29</AppVersion>
+  <CPSheet>
+    <GroupBox Label="Part Dimensions" PropName="Groupbox7" DefaultState="Expanded">
+      <Control Label="Outside Diameter" PropName="OD" ApplyTo="Global" Type="NumericCtrl" ReadOnly="False" DefaultValue="0" />
+      <Control Label="Inside Diameter" PropName="ID" ApplyTo="Global" Type="NumericCtrl" ReadOnly="False" DefaultValue="0" />
+      <Control Label="Part Length" PropName="Length" ApplyTo="Global" Type="NumericCtrl" ReadOnly="False" DefaultValue="0" />
+      <Control Label="What type of Shaft?" PropName="SelectionType" ApplyTo="Global" Type="RadioButton" ReadOnly="False">
+        <Data>
+          <Item Label="Hex" PropValue="0" />
+          <Item Label="ThunderHex" PropValue="1">
+            <ChildControl PropName="500THKey" Visibility="IsChecked=true" />
+            <ChildControl PropName="375THKey" Visibility="IsChecked=true" />
+          </Item>
+          <Item Label="Round" PropValue="2">
+            <ChildControl PropName="Note1" Visibility="IsChecked=true" />
+            <ChildControl PropName="Note2" Visibility="IsChecked=true" />
+            <ChildControl PropName="500RDKey" Visibility="IsChecked=true" />
+            <ChildControl PropName="375RDKey" Visibility="IsChecked=true" />
+          </Item>
+        </Data>
+      </Control>
+      <Control Label="How Many Snap Ring Grooves?" PropName="SnapRingCount" ApplyTo="Global" Type="ComboBox" ReadOnly="False" UserDefineable="False">
+        <Data Path="" SourceType="List">
+          <Item>0</Item>
+          <Item>1</Item>
+          <Item>2</Item>
+        </Data>
+      </Control>
+      <Control Label="Only use for:" PropName="Note1" ApplyTo="Global" Type="TextBox" ReadOnly="True" DefaultValue="solid rod or VEXpro Tube Axle Stock." Mode="Text" />
+      <Control Label="All other round tube use:" PropName="Note2" ApplyTo="Global" Type="TextBox" ReadOnly="True" DefaultValue="rb_round-tube template" Mode="Text" />
+    </GroupBox>
+    <GroupBox Label="Part Info" PropName="Groupbox6" DefaultState="Expanded">
+      <Control Label="Part Description" PropName="Description" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="" Mode="Text" />
+      <Control Label="Part Material" PropName="Material" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="SW-Material" Mode="SWProperty" />
+      <Control Label="Part Weight" PropName="Weight" ApplyTo="Global" Type="TextBox" ReadOnly="False" DefaultValue="SW-Mass" Mode="SWProperty" />
+    </GroupBox>
+    <GroupBox Label="Inside Diameter Key" PropName="Groupbox18" DefaultState="Expanded">
+      <Control Label="1/2&quot; Tube Axle" PropName="500RDKey" ApplyTo="Global" Type="TextBox" ReadOnly="True" DefaultValue="Ø.258" Mode="Text" />
+      <Control Label="3/8&quot; Tube Axle" PropName="375RDKey" ApplyTo="Global" Type="TextBox" ReadOnly="True" DefaultValue="Ø.201" Mode="Text" />
+      <Control Label="1/2&quot; ThunderHex" PropName="500THKey" ApplyTo="Global" Type="TextBox" ReadOnly="True" DefaultValue="Ø.201" Mode="Text" />
+      <Control Label="3/8&quot; ThunderHex" PropName="375THKey" ApplyTo="Global" Type="TextBox" ReadOnly="True" DefaultValue="Ø.165" Mode="Text" />
+    </GroupBox>
+  </CPSheet>
+</CPTemplate>
