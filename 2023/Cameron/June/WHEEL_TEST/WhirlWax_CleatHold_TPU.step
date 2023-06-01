@@ -10,7 +10,7 @@ FILE_DESCRIPTION(
 
 FILE_NAME(
 /* name */ 'WhirlWax_CleatHold_TPU.step',
-/* time_stamp */ '2023-05-29T20:00:21-04:00',
+/* time_stamp */ '2023-06-01T15:45:16-04:00',
 /* author */ (''),
 /* organization */ (''),
 /* preprocessor_version */ 'ST-DEVELOPER v19.2',
@@ -1720,17 +1720,17 @@ SOLID_ANGLE_UNIT()
 #1601=PRODUCT_DEFINITION_SHAPE('',$,#1604);
 #1602=SHAPE_REPRESENTATION('',(#924),#1594);
 #1603=PRODUCT_DEFINITION_CONTEXT('part definition',#1608,'design');
-#1604=PRODUCT_DEFINITION('Flash Hobby 3536','Flash Hobby 3536 v3',#1605,
+#1604=PRODUCT_DEFINITION('Flash Hobby 3536','Flash Hobby 3536 v6',#1605,
 #1603);
 #1605=PRODUCT_DEFINITION_FORMATION('',$,#1610);
-#1606=PRODUCT_RELATED_PRODUCT_CATEGORY('Flash Hobby 3536 v3',
-'Flash Hobby 3536 v3',(#1610));
+#1606=PRODUCT_RELATED_PRODUCT_CATEGORY('Flash Hobby 3536 v6',
+'Flash Hobby 3536 v6',(#1610));
 #1607=APPLICATION_PROTOCOL_DEFINITION('international standard',
 'automotive_design',2009,#1608);
 #1608=APPLICATION_CONTEXT(
 'Core Data for Automotive Mechanical Design Process');
 #1609=PRODUCT_CONTEXT('part definition',#1608,'mechanical');
-#1610=PRODUCT('Flash Hobby 3536','Flash Hobby 3536 v3',$,(#1609));
+#1610=PRODUCT('Flash Hobby 3536','Flash Hobby 3536 v6',$,(#1609));
 #1611=PRESENTATION_STYLE_ASSIGNMENT((#1614));
 #1612=PRESENTATION_STYLE_ASSIGNMENT((#1615));
 #1613=PRESENTATION_STYLE_ASSIGNMENT((#1616));
