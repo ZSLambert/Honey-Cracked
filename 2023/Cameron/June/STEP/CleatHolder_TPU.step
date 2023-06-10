@@ -10,7 +10,7 @@ FILE_DESCRIPTION(
 
 FILE_NAME(
 /* name */ 'CleatHolder_TPU.step',
-/* time_stamp */ '2023-06-10T11:35:13-04:00',
+/* time_stamp */ '2023-06-10T11:58:55-04:00',
 /* author */ (''),
 /* organization */ (''),
 /* preprocessor_version */ 'ST-DEVELOPER v19.2',
@@ -1695,17 +1695,17 @@ SOLID_ANGLE_UNIT()
 #1588=PRODUCT_DEFINITION_SHAPE('',$,#1591);
 #1589=SHAPE_REPRESENTATION('',(#912),#1582);
 #1590=PRODUCT_DEFINITION_CONTEXT('part definition',#1595,'design');
-#1591=PRODUCT_DEFINITION('Flash Hobby 3536','Flash Hobby 3536 v10',#1592,
+#1591=PRODUCT_DEFINITION('Flash Hobby 3536','Flash Hobby 3536 v13',#1592,
 #1590);
 #1592=PRODUCT_DEFINITION_FORMATION('',$,#1597);
-#1593=PRODUCT_RELATED_PRODUCT_CATEGORY('Flash Hobby 3536 v10',
-'Flash Hobby 3536 v10',(#1597));
+#1593=PRODUCT_RELATED_PRODUCT_CATEGORY('Flash Hobby 3536 v13',
+'Flash Hobby 3536 v13',(#1597));
 #1594=APPLICATION_PROTOCOL_DEFINITION('international standard',
 'automotive_design',2009,#1595);
 #1595=APPLICATION_CONTEXT(
 'Core Data for Automotive Mechanical Design Process');
 #1596=PRODUCT_CONTEXT('part definition',#1595,'mechanical');
-#1597=PRODUCT('Flash Hobby 3536','Flash Hobby 3536 v10',$,(#1596));
+#1597=PRODUCT('Flash Hobby 3536','Flash Hobby 3536 v13',$,(#1596));
 #1598=PRESENTATION_STYLE_ASSIGNMENT((#1601));
 #1599=PRESENTATION_STYLE_ASSIGNMENT((#1602));
 #1600=PRESENTATION_STYLE_ASSIGNMENT((#1603));
