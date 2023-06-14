@@ -20,12 +20,20 @@ int accelX;                   // H3LIS331DL x-axis reading
 int accelY;                   // H3LIS331DL y-axis reading
 int accelZ;                   // H3LIS331DL z-axis reading
 
-int leftDrivePower;           // Left-side drive power. Tells the Left-side drive how fast to spin.
-int rightDrivePower;          // Right-side drive power. Tells the Right-side drive how fast to spin.
+double robotAngle;            // Calculated angle of the robot.
+
+double leftDrivePower;        // Left-side drive power. Tells the Left-side drive how fast to spin.
+double rightDrivePower;       // Right-side drive power. Tells the Right-side drive how fast to spin.
 
 int rx_forwardsBackwards;     // Forwards/Backwards control. Receiver signal for gathering forwards and backwards movement. -100 if backwards, 100 is forwards.
 int rx_leftRight;             // Left/Right control. Receiver signal for gathering left and right movement. -100 is left, 100 is right.
 int rx_spinSpeed;             // Spin control. Receiver signal for gathering what speed the robot should spin at. -100 up to 0 is arcade/calibrate drive, 0 to 100 is spin drive.
+
+enum DriveState {
+  Disabled,                   // Robot is disabled. Will not move.
+  Arcade,                     // Robot is in arcade drive. Spin will not work. Used to calibrate augmented forwards.
+  Meltybrain                  // Robot is in meltybrain drive. Spin will work and uses a calculated augmented robot centric drive.
+};
 
 /* 
  *  readReceiver
@@ -38,6 +46,9 @@ void readReceiver() {
   rx_spinSpeed = analogRead(RECEIVER_SPIN_PIN);
 }
 
+void calculateRotation() {
+
+}
 
 void setup() {
   // Configures PWM output pins to control drive and LED
