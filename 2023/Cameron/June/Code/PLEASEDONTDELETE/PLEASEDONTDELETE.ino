@@ -1,6 +1,6 @@
+#include <Adafruit_NeoPixel.h>
 #include "SparkFun_LIS331.h"
 #include <SPI.h>
-#include <Adafruit_NeoPixel.h>
 
 #define DRIVE_LEFT_PIN 5      // Pin number for sending singal to the Left Drive ESC. 
 #define DRIVE_RIGHT_PIN 6     // Pin number for sending singal to the Right Drive ESC.
@@ -20,6 +20,8 @@
 #define RECEIVER_LR_PIN 15      // Pin number for accessing the receiver's forwards and backwards data.
 #define RECEIVER_SPIN_PIN 16    // Pin number for accessing the receiver's forwards and backwards data.
 
+Adafruit_NeoPixel leds(LED_AMOUNT, LED_PIN, NEO_GRB + NEO_KHZ800);    // Neopixel controller
+
 LIS331 accelerometer;         // H3LIS331DL accelerometer. 
 int16_t accelX;               // H3LIS331DL x-axis reading
 int16_t accelY;               // H3LIS331DL y-axis reading
@@ -27,14 +29,10 @@ int16_t accelZ;               // H3LIS331DL z-axis reading
 float accelXToG;              // X-axis reading to G values
 float accelYToG;              // Y-axis reading to G values
 float accelZToG;              // Z-axis reading to G values
-const double k_accelRadius = 6.35;      // Distance between the center of the robot and the accelerometer. In cm.
-const double k_accelCircumference = k_accelRadius * 2 * PI;       // Circumference of the accelerometer.
+const float k_gravityAccel = 9.81;
+const double k_accelRadius = 0.0635;      // Distance between the center of the robot and the accelerometer. In m.
 
-Adafruit_NeoPixel leds(LED_AMOUNT, LED_PIN, NEO_GRB + NEO_KHZ800);    // Neopixel controller
-
-double robot_tanVelocity;     // Tangential velocity of the robot.
-double robot_circumPosition;  // Tangential position of the robot.
-double robot_angleRadians;    // Radial position of the robot.
+double robot_angVelocity;     // Angular velocity of the robot.
 double robot_rpm;             // RPM of the robot.
 const int k_maxRpm = 2000;    // Max RPM of the robot.
 
@@ -46,6 +44,7 @@ const double k_clockCycleToSeconds = 1.0 / 600000000;     // constant variable t
 uint16_t leftDrivePwm;        // Left-side drive power. Tells the Left-side drive how fast to spin.
 uint16_t rightDrivePwm;       // Right-side drive power. Tells the Right-side drive how fast to spin.
 double meltyMoveAngle;        // Angle at which the meltybrain needs to move.
+const double k_meltyAdjustFactor = 0.25;
 
 uint16_t rx_forwardsBackwards;     // Forwards/Backwards control. Receiver signal for gathering forwards and backwards movement. -100 if backwards, 100 is forwards.
 uint16_t rx_leftRight;             // Left/Right control. Receiver signal for gathering left and right movement. -100 is left, 100 is right.
@@ -54,12 +53,14 @@ const int k_pwmMax = 2000;    // Maximum read pwm signal. Used to round down if 
 const int k_pwmMin = 1000;    // Minimum read pwm signal. Used to round up if pwm is lower.
 const int k_pwmCenter = 1500; // Neutral value of the pwm signal.
 const int k_pwmDeadzone = 20; // Deadzone for pwm. Used to not take input if pwm is within +/- of center pwm.
+const int k_meltyStartValue = 1050;
 
-enum DriveState {
-  Disabled,                   // Robot is disabled. Will not move.
-  Arcade,                     // Robot is in arcade drive. Spin will not work. Used to calibrate augmented forwards.
-  Meltybrain                  // Robot is in meltybrain drive. Spin will work and uses a calculated augmented robot centric drive.
-};
+#define ANALOG_MAX 8191
+
+// PWM FREQ must not be >= 500
+#define PWM_FREQ 490
+const int k_analogMin = (int)round(ANALOG_MAX * 0.000001 * PWM_FREQ * k_pwmMin);
+const int k_analogMax = (int)round(ANALOG_MAX * 0.000001 * PWM_FREQ * k_pwmMax);
 
 /*
  * calculateTimeCycle
@@ -105,61 +106,15 @@ void readReceiver() {
 }
 
 /*
- * ledControl
- * 
- * Function used to control the LED. 
- * 
- * @param color - The hue to turn the led
- * @param ledOn - Boolean to either color or clear the leds.
- */
-void ledControl(uint16_t color, boolean ledOn) {
-  if (ledOn) {
-    leds.fill(leds.ColorHSV(color, 255, 255));
-  } else {
-    leds.clear();
-  }
-  leds.show();
-}
-
-/*
  * readAndConvertAccel
  * 
  * Passes accelerometer axis reading variables to be updated. Converts each value into Gs
  */
 void readAndConvertAccel() {
   accelerometer.readAxes(accelX, accelY, accelZ);
-  accelXToG = accelerometer.convertToG(100, accelX);
-  accelYToG = accelerometer.convertToG(100, accelY);
-  accelZToG = accelerometer.convertToG(100, accelZ);
-}
-
-/*
- * calculateRotation
- * 
- * The main calculations.
- * Derives velocity and position. 
- */
-void calculateRotation() {
-  readAndConvertAccel();
-  calculateTimeCycle();
-
-  robot_tanVelocity = robot_tanVelocity + (accelXToG * betweenTimes);
-  robot_circumPosition = robot_circumPosition + (robot_tanVelocity * betweenTimes);
-  if(robot_circumPosition >= k_accelCircumference) {
-    robot_circumPosition -= k_accelCircumference;
-  }
-  robot_angleRadians = (robot_circumPosition / k_accelCircumference) * 2;
-  robot_rpm = robot_tanVelocity * 60;
-  
-}
-
-/*
- * calculateMovementAngle
- * 
- * Calculates the angle of the transmitter's x and y values to move the robot in meltybrain mode
- */
-void calculateMovementAngle() {
-  
+  accelXToG = abs(accelerometer.convertToG(100, accelX));
+  accelYToG = abs(accelerometer.convertToG(100, accelY));
+  accelZToG = abs(accelerometer.convertToG(100, accelZ));
 }
 
 /*
@@ -168,20 +123,18 @@ void calculateMovementAngle() {
  * Sends the PWM signals to drive each motor
  */
 void driveMotors() {
-  analogWrite(DRIVE_LEFT_PIN, leftDrivePwm);
-  analogWrite(DRIVE_RIGHT_PIN, rightDrivePwm);
-}
-
-/*
- * disabledState
- * 
- * Robot control if the robot is disabled.
- */
-void disabledState() {
-  ledControl(LED_RED, true);
-  leftDrivePwm = k_pwmCenter;
-  rightDrivePwm = k_pwmCenter;
-  driveMotors();
+  int leftAnalogOut = map(leftDrivePwm, k_pwmMin, k_pwmMax, k_analogMin, k_analogMax);
+  int rightAnalogOut = map(rightDrivePwm, k_pwmMin, k_pwmMax, k_analogMin, k_analogMax);
+  //Serial.print(leftDrivePwm);
+//  Serial.print(" (");
+//  Serial.print(leftAnalogOut);
+//  Serial.print("), ");
+//  Serial.print(rightDrivePwm);
+//  Serial.print(" (");
+//  Serial.print(rightAnalogOut);
+//  Serial.println(")");
+  analogWrite(DRIVE_LEFT_PIN, leftAnalogOut);
+  analogWrite(DRIVE_RIGHT_PIN, rightAnalogOut);
 }
 
 /* 
@@ -190,25 +143,27 @@ void disabledState() {
  * Robot control if the robot is in arcade mode.
  */
 void arcadeState() {
-  ledControl(LED_BLUE, true);
-  leftDrivePwm = pwmCheck((rx_forwardsBackwards + rx_leftRight) - k_pwmCenter);
-  rightDrivePwm = pwmCheck((rx_forwardsBackwards - rx_leftRight) + k_pwmCenter);
-  driveMotors();
-  
+  leftDrivePwm = pwmCheck(rx_forwardsBackwards + rx_leftRight - k_pwmCenter);
+  rightDrivePwm = pwmCheck(rx_leftRight + k_pwmCenter - rx_forwardsBackwards);
 }
 
-/*
- * melybrainState
- * 
- * Robot control if the robot is in meltybrain mode.
- */
-void meltybrainState() {
-  calculateRotation();
-  if((robot_angleRadians >= 1.95) || (robot_angleRadians <= 0.05)) {
-    ledControl(LED_YELLOW, true);
-  } else {
-    ledControl(LED_RED, false);
-  }
+void meltyState() {
+  robot_angVelocity = sqrt((accelXToG * k_gravityAccel) / k_accelRadius);
+  robot_rpm = robot_angVelocity * (30 / PI);
+//  Serial.println("accelXToG: ");
+//  Serial.println(accelXToG);
+//  Serial.print("robot_rpm: ");
+//  Serial.println(robot_rpm);
+  double x = (((double) rx_leftRight) - k_pwmCenter) / 500.0;
+  double y = (((double) rx_forwardsBackwards) - k_pwmCenter) / 500.0;
+  double mag_pow = min(max(-1.0, sqrt(x*x+y*y)), 1.0);
+  double ang_rad = atan2(y, x); // Maybe negate?
+  double timeScalar = PI * robot_rpm / 30.0;
+  double t_seconds = calcTime * k_clockCycleToSeconds;
+  double adj = (mag_pow * sin(timeScalar * t_seconds + ang_rad)) * k_meltyAdjustFactor;
+  double spinPower = min(max(0.0, (rx_spinSpeed - 1000.0) / 1000.0), 1.0);
+  leftDrivePwm = pwmCheck((spinPower + adj) * 500.0 + 1500.0);
+  rightDrivePwm = pwmCheck((spinPower - adj) * 500.0 + 1500.0);
 }
 
 void setup() {
@@ -222,6 +177,10 @@ void setup() {
   pinMode(RECEIVER_LR_PIN, INPUT);
   pinMode(RECEIVER_SPIN_PIN, INPUT);
 
+  analogWriteResolution(13);
+  analogWriteFrequency(DRIVE_LEFT_PIN, PWM_FREQ);
+  analogWriteFrequency(DRIVE_RIGHT_PIN, PWM_FREQ);
+
   // Configues SPI pins for communication with the H3LIS331DL
   pinMode(CS_PIN, OUTPUT);
   digitalWrite(CS_PIN, HIGH);
@@ -233,25 +192,27 @@ void setup() {
   SPI.begin();
   accelerometer.setSPICSPin(CS_PIN);
   accelerometer.begin(LIS331::USE_SPI);
-  //accelerometer.axesEnable(true);
-  //accelerometer.setFullScale(LIS331::HIGH_RANGE);
-
-  leds.begin();
-
+  
   // Starts clock cycle timing
   ARM_DEMCR |= ARM_DEMCR_TRCENA;
   ARM_DWT_CTRL |= ARM_DWT_CTRL_CYCCNTENA;
   calcTime = ARM_DWT_CYCCNT;
 
-  Serial.begin(152000);
+  //Serial.begin(152000);
 }
 
 void loop() {
-  //readReceiver();
-  Serial.println(accelerometer.newXData());
-  readAndConvertAccel();
-  Serial.println(accelerometer.newXData());
-  Serial.println(accelZToG);
-  Serial.println();
-  delay(200);
+  readReceiver();
+  calculateTimeCycle();
+  if (rx_spinSpeed < k_meltyStartValue) {
+    //Serial.println("ARCA: ");
+    arcadeState();
+  } else {
+    readAndConvertAccel();
+    rx_spinSpeed = map(rx_spinSpeed, k_meltyStartValue, 2000, 1000, 2000);
+    //Serial.println("MELT: ");
+    meltyState();
+  }
+  //Serial.println();
+  driveMotors();
 }           
