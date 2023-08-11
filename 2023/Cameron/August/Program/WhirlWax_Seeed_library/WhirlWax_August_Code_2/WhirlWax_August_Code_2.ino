@@ -1,4 +1,4 @@
-#include <SparkFun_LIS331.h>
+#include "H3LIS331DL.h"
 #include <SPI.h>
 
 #define DRIVE_LEFT_PIN 5      // Pin number for sending signal to the Left Drive ESC. 
@@ -16,22 +16,23 @@
 #define RECEIVER_LR_PIN 15      // Pin number for accessing the receiver's forwards and backwards data.
 #define RECEIVER_SPIN_PIN 16    // Pin number for accessing the receiver's forwards and backwards data.
 
-LIS331 accelerometer_1;         // H3LIS331DL accelerometer 1.
+H3LIS331DL accelerometer_1;     // H3LIS331DL accelerometer 1.
 int16_t accel_1_X;              // H3LIS331DL 1 x-axis reading
 int16_t accel_1_Y;              // H3LIS331DL 1 y-axis reading
 int16_t accel_1_Z;              // H3LIS331DL 1 z-axis reading
-LIS331 accelerometer_2;         // H3LIS331DL accelerometer 2.
+double accel_1_g[3];
+H3LIS331DL accelerometer_2;     // H3LIS331DL accelerometer 2.
 int16_t accel_2_X;              // H3LIS331DL 2 x-axis reading
 int16_t accel_2_Y;              // H3LIS331DL 2 y-axis reading
 int16_t accel_2_Z;              // H3LIS331DL 2 z-axis reading
-int16_t accel_axes_sensor_avg;  // Average acceleration of both accelerometer's x and y axes 
-float accel_g;                 // Acceleration, in Gs, of the averaged acelerometer readings
+double accel_2_g[3];
+double accel_axes_sensor_avg;   // Average acceleration of both accelerometer's x and y axes
+double accel_g;                 // Acceleration, in Gs, of the averaged acelerometer readings
 const float k_gravityAccel = 9.80665;
 const double k_accelRadius = 0.017387755674;      // Distance between the center of the robot and the accelerometers. In meters.
 
 double robot_angVelocity;     // Angular velocity of the robot.
 double robot_heading;         // Direction the "front" of the robot is facing (radians)
-const int k_maxRpm = 2000;    // Max RPM of the robot.
 const float k_headingLEDHigh = 1.95;  // Higher angle, in radians, the robot has to be facing in order to turn on LEDs
 const float k_headingLEDLow = 0.05;   // Lower angle, in radians, the robot has to be facing in order to turn on LEDs
 
@@ -48,11 +49,11 @@ const double k_meltyAdjustFactor = 0.25;
 uint16_t rx_forwardsBackwards;     // Forwards/Backwards control. Receiver signal for gathering forwards and backwards movement. -100 if backwards, 100 is forwards.
 uint16_t rx_leftRight;             // Left/Right control. Receiver signal for gathering left and right movement. -100 is left, 100 is right.
 uint16_t rx_spinSpeed;             // Spin control. Receiver signal for gathering what speed the robot should spin at. -100 up to 0 is arcade/calibrate drive, 0 to 100 is spin drive.
-const int k_pwmMax = 2000;    // Maximum read pwm signal. Used to round down if pwm is higher.
-const int k_pwmMin = 1000;    // Minimum read pwm signal. Used to round up if pwm is lower.
-const int k_pwmCenter = 1500; // Neutral value of the pwm signal.
-const int k_pwmDeadzone = 20; // Deadzone for pwm. Used to not take input if pwm is within +/- of center pwm.
-const int k_meltyStartValue = 1050;
+const int k_pwmMax = 2000;         // Maximum read pwm signal. Used to round down if pwm is higher.
+const int k_pwmMin = 1000;         // Minimum read pwm signal. Used to round up if pwm is lower.
+const int k_pwmCenter = 1500;      // Neutral value of the pwm signal.
+const int k_pwmDeadzone = 20;      // Deadzone for pwm. Used to not take input if pwm is within +/- of center pwm.
+const int k_meltyStartValue = 1050;   // Minimum rx value requirement to begin meltybrain mode
 
 #define ANALOG_MAX 8191
 
@@ -111,54 +112,43 @@ void readReceiver() {
  */
 void readAndConvertAccel() {
   digitalWrite(CS_PIN_ACCEL_1, LOW);
-  accelerometer_1.readAxes(accel_1_X, accel_1_Y, accel_1_Z);
+  accelerometer_1.readXYZ(&accel_1_X, &accel_1_Y, &accel_1_Z);
+  accelerometer_1.getAcceleration(accel_1_g);
   digitalWrite(CS_PIN_ACCEL_1, HIGH);
-  // Next 3 lines are to calibrate sensors to an average of 0 sensor units in both positive and negative directions in regards to gravity;
-  accel_1_X += (23 - 17) / 2;
-  accel_1_Y += (37 - 5) / 2;
-  accel_1_Z += (5 - 37) / 2;
   digitalWrite(CS_PIN_ACCEL_2, LOW);
-  accelerometer_2.readAxes(accel_2_X, accel_2_Y, accel_2_Z);
+  accelerometer_2.readXYZ(&accel_2_X, &accel_2_Y, &accel_2_Z);
+  accelerometer_2.getAcceleration(accel_2_g);
   digitalWrite(CS_PIN_ACCEL_2, HIGH);
-  // Next 3 lines are to calibrate sensors to an average of 0 sensor units in both positive and negative directions in regards to gravity;
-  accel_2_X += (18 - 24) / 2;
-  accel_2_Y += (20 - 22) / 2;
-  accel_2_Z += (-14 - 58) / 2;
   calculateTimeCycle();
-  accel_axes_sensor_avg = (uint16_t)(sqrt(2) * ((abs(accel_1_X) + abs(accel_1_Y) + abs(accel_2_X) + abs(accel_2_Y)) / 4.0)); // sqrt((((X1 + Y1 + X2 + Y2) / 4) ^ 2) * 2) = sqrt(2X^2) = sqrt(2) * X
-  accel_g = accelerometer_1.convertToG(100, accel_axes_sensor_avg);
-  float accel1_xg = accelerometer_1.convertToG(100, accel_1_X);
-  float accel2_xg = accelerometer_2.convertToG(100, accel_2_X);
-  float accel1_yg = accelerometer_1.convertToG(100, accel_1_Y);
-  float accel2_yg = accelerometer_2.convertToG(100, accel_2_Y);
-  float accel1_zg = accelerometer_1.convertToG(100, accel_1_Z);
-  float accel2_zg = accelerometer_2.convertToG(100, accel_2_Z);
+  accel_axes_sensor_avg = (sqrt(2) * ((abs(accel_1_X) + abs(accel_1_Y) + abs(accel_2_X) + abs(accel_2_Y)) / 4.0)); // sqrt((((X1 + Y1 + X2 + Y2) / 4) ^ 2) * 2) = sqrt(2X^2) = sqrt(2) * X
+  //accel_g = accel_axes_sensor_avg;
+  accel_g = (sqrt(2) * ((abs(accel_1_g[0]) + abs(accel_1_g[1]) + abs(accel_2_g[0]) + abs(accel_2_g[1])) / 4.0));
   Serial.write("Accel 1: \n");
   Serial.write("  X: ");
   Serial.println(accel_1_X);
   Serial.write("  X G: ");
-  Serial.println(accel1_xg);
+  Serial.println(accel_1_g[0]);
   Serial.write("  Y: ");
   Serial.println(accel_1_Y);
   Serial.write("  Y G: ");
-  Serial.println(accel1_yg);
+  Serial.println(accel_1_g[1]);
   Serial.write("  Z: ");
   Serial.println(accel_1_Z);
   Serial.write("  Z G: ");
-  Serial.println(accel1_zg);
+  Serial.println(accel_1_g[2]);
   Serial.write("Accel 2: \n");
   Serial.write("  X: ");
   Serial.println(accel_2_X);
   Serial.write("  X G: ");
-  Serial.println(accel2_xg);
+  Serial.println(accel_2_g[0]);
   Serial.write("  Y: ");
   Serial.println(accel_2_Y);
   Serial.write("  Y G: ");
-  Serial.println(accel2_yg);
+  Serial.println(accel_2_g[1]);
   Serial.write("  Z: ");
   Serial.println(accel_2_Z);
   Serial.write("  Z G: ");
-  Serial.println(accel2_zg);
+  Serial.println(accel_2_g[2]);
   Serial.write("Accel Avg: ");
   Serial.println(accel_axes_sensor_avg);
   Serial.write("Accel G: ");
@@ -257,23 +247,26 @@ void setup() {
   pinMode(MISO_PIN, INPUT);
   pinMode(SCK_PIN, OUTPUT);
 
-  // Starts SPI
+  Serial.begin(152000);
   SPI.begin();
-  accelerometer_1.setPowerMode(LIS331::NORMAL);
-  accelerometer_1.setSPICSPin(CS_PIN_ACCEL_1);
-  accelerometer_1.begin(LIS331::USE_SPI);
   
-  accelerometer_2.setPowerMode(LIS331::NORMAL);
-  accelerometer_2.setSPICSPin(CS_PIN_ACCEL_2);
-  accelerometer_2.begin(LIS331::USE_SPI);
-
+  accelerometer_1.setSPI34Wire(H3LIS331DL_SPI_4_WIRE);
+  accelerometer_2.setSPI34Wire(H3LIS331DL_SPI_4_WIRE);
+  accelerometer_1.init(H3LIS331DL_ODR_1000Hz, H3LIS331DL_NORMAL, H3LIS331DL_FULLSCALE_8);
+  accelerometer_2.init(H3LIS331DL_ODR_1000Hz, H3LIS331DL_NORMAL, H3LIS331DL_FULLSCALE_8);
+  byte ac1;
+  Serial.println(accelerometer_1.getWHO_AM_I(&ac1));
+  Serial.println(ac1);
+  byte ac2;
+  Serial.println(accelerometer_2.getWHO_AM_I(&ac2));
+  Serial.println(ac2);
+  //accelerometer_1.importPara(200, 200, 200);
+  //accelerometer_2.importPara(200, 200, 200);
   
   // Starts clock cycle timing
   ARM_DEMCR |= ARM_DEMCR_TRCENA;
   ARM_DWT_CTRL |= ARM_DWT_CTRL_CYCCNTENA;
   calcTime_cyccnt = ARM_DWT_CYCCNT;
-
-  Serial.begin(115200);
 }
 
 void loop() {
@@ -302,5 +295,4 @@ void loop() {
   Serial.write("Right Drive: ");
   Serial.println(rightDrivePwm);
   driveMotors();
-  delay(100);
 }           
