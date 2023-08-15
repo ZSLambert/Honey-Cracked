@@ -12,3 +12,5 @@ June: https://docs.google.com/spreadsheets/d/1VxV1eOvUH9W0uyI_mkPyqmhUPpl0Er3kOZ
 
 August: https://docs.google.com/spreadsheets/d/1nazC7w_XzXRSnRCetOlDqRtKk2c56Oo-7I27KgWQoIM/edit?usp=drivesdk
 
+September: https://docs.google.com/spreadsheets/d/1PvzalvhNFe5M_AwB1MuoBsbq5fvfRr7UjUtkO1n1Mvo/edit?usp=sharing
+
