@@ -14,3 +14,5 @@ August: https://docs.google.com/spreadsheets/d/1nazC7w_XzXRSnRCetOlDqRtKk2c56Oo-
 
 September: https://docs.google.com/spreadsheets/d/1PvzalvhNFe5M_AwB1MuoBsbq5fvfRr7UjUtkO1n1Mvo/edit?usp=sharing
 
+Championship: https://docs.google.com/spreadsheets/d/16Naj6Oqwqc4Wxy8RHAPHtNU4_DjePBQ42fMmJ4VHN7E/edit?usp=sharing
+
