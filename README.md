@@ -16,6 +16,8 @@ September: https://docs.google.com/spreadsheets/d/1PvzalvhNFe5M_AwB1MuoBsbq5fvfR
 
 Championship: https://docs.google.com/spreadsheets/d/16Naj6Oqwqc4Wxy8RHAPHtNU4_DjePBQ42fMmJ4VHN7E/edit?usp=sharing
 
+All Stars: https://docs.google.com/spreadsheets/d/1XcS26LEf2bVPp-QfX6GqZ24I2gIJDtOBElg_Z8Mt_Hg/edit?usp=sharing
+
 2024:
 
 January: https://docs.google.com/spreadsheets/d/1Tz6u993xCDknc3B_AQDtw5oDWShXo8XcdEmH_WmX-xs/edit?usp=sharing
