@@ -16,4 +16,6 @@ March: https://docs.google.com/spreadsheets/d/1pyvv8Z3StTtmZpE0JScBdc4CgQOpa32Vx
 
 Teams event: https://docs.google.com/spreadsheets/d/1jx98P3kETFeNjY0tgOiqF6Afzog6x6XWVmjwL66BmDs/edit?usp=sharing
 
+June 22nd: https://docs.google.com/spreadsheets/d/1Mfc7LVUKm1O2cFeabrPIdDm-5_V3wVosnVtwAy5Sc2Q/edit?usp=sharing
+
 
