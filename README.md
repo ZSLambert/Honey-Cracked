@@ -1,3 +1,7 @@
+# THIS PROJECT HAS BEEN MOVED
+
+The 2024 season project is now stored [here](https://github.com/ZSLambert/Honey-Cracked-2024/).
+
 # Honey-Cracked
 Please store your files under your name under the correct season.
 
