@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580.5 234">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 60px;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        fill: #231f20;
+        font-family: Funkrocker, Funkrocker;
+      }
+
+      .cls-2 {
+        font-size: 68px;
+      }
+
+      .cls-5 {
+        letter-spacing: -.07em;
+      }
+
+      .cls-3 {
+        font-size: 36px;
+      }
+
+      .cls-6 {
+        fill: #facb18;
+        stroke-width: 0px;
+      }
+
+      .cls-7 {
+        letter-spacing: -.07em;
+      }
+
+      .cls-8 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-9 {
+        letter-spacing: -.1em;
+      }
+
+      .cls-4 {
+        font-size: 100px;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <g>
+        <g>
+          <rect class="cls-6" width="540" height="108" rx="12" ry="12"/>
+          <rect class="cls-6" x="40.5" y="126" width="540" height="108" rx="12" ry="12"/>
+          <text class="cls-1" transform="translate(246.9 138.17)"><tspan class="cls-7" x="0" y="0">V</tspan><tspan x="42.92" y="0">S</tspan></text>
+          <text class="cls-2" transform="translate(157.54 75.06)"><tspan x="0" y="0">HoneySpark</tspan></text>
+        </g>
+        <text class="cls-4" transform="translate(40.92 91.33)"><tspan x="0" y="0">3</tspan></text>
+      </g>
+      <text class="cls-3" transform="translate(81.34 189.44)"><tspan x="0" y="0">Be</tspan><tspan class="cls-8" x="39.73" y="0">e</tspan><tspan x="59.33" y="0">tleJui</tspan><tspan class="cls-5" x="137.81" y="0">c</tspan><tspan x="153.19" y="0">e</tspan></text>
+      <text class="cls-3" transform="translate(284.84 173.44)"><tspan x="0" y="0">Chubby </tspan><tspan x="0" y="32">Uni</tspan><tspan class="cls-5" x="44.82" y="32">c</tspan><tspan x="60.21" y="32">orn</tspan></text>
+      <text class="cls-3" transform="translate(428.58 190.11)"><tspan class="cls-9" x="0" y="0">K</tspan><tspan x="18.65" y="0">amino</tspan></text>
+    </g>
+  </g>
+</svg>
