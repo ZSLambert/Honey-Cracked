@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580.5 234">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: -.08em;
+      }
+
+      .cls-2 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-3 {
+        font-size: 60px;
+      }
+
+      .cls-3, .cls-4, .cls-5, .cls-6 {
+        fill: #231f20;
+        font-family: Funkrocker, Funkrocker;
+      }
+
+      .cls-7 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-8 {
+        letter-spacing: -.07em;
+      }
+
+      .cls-4 {
+        font-size: 34.57px;
+      }
+
+      .cls-9 {
+        fill: #facb18;
+        stroke-width: 0px;
+      }
+
+      .cls-10 {
+        letter-spacing: -.07em;
+      }
+
+      .cls-11 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-12 {
+        letter-spacing: -.2em;
+      }
+
+      .cls-13 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-14 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-5 {
+        font-size: 72px;
+      }
+
+      .cls-6 {
+        font-size: 100px;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <g>
+        <g>
+          <rect class="cls-9" width="540" height="108" rx="12" ry="12"/>
+          <rect class="cls-9" x="40.5" y="126" width="540" height="108" rx="12" ry="12"/>
+          <text class="cls-3" transform="translate(246.9 138.17)"><tspan class="cls-10" x="0" y="0">V</tspan><tspan x="42.92" y="0">S</tspan></text>
+          <text class="cls-5" transform="translate(185.56 75.06)"><tspan x="0" y="0">Bee</tspan><tspan class="cls-1" x="120.73" y="0">F</tspan><tspan x="146.85" y="0">or</tspan><tspan class="cls-8" x="210.06" y="0">c</tspan><tspan x="240.82" y="0">e</tspan></text>
+        </g>
+        <text class="cls-6" transform="translate(20.25 88)"><tspan x="0" y="0">30</tspan></text>
+      </g>
+      <g>
+        <text class="cls-4" transform="translate(50.77 173.7)"><tspan class="cls-2" x="0" y="0">C</tspan><tspan x="19.72" y="0">ol</tspan><tspan class="cls-14" x="46.59" y="0">o</tspan><tspan x="66.24" y="0">ssal</tspan><tspan class="cls-12" x="0" y="30.73">A</tspan><tspan x="20.48" y="30.73">vian</tspan></text>
+        <text class="cls-4" transform="translate(205.96 175.04)"><tspan x="0" y="0">Knock </tspan><tspan class="cls-11" x="100.85" y="0">O</tspan><tspan class="cls-13" x="126.1" y="0">f</tspan><tspan x="137.75" y="0">f</tspan><tspan x="0" y="30.73">White</tspan></text>
+        <text class="cls-4" transform="translate(396.69 189.06)"><tspan x="0" y="0">Synth</tspan><tspan class="cls-7" x="81.11" y="0">e</tspan><tspan x="99.94" y="0">sis 30</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
